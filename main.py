@@ -1,172 +1,170 @@
-print("Welcome to The data Analyzer and Transformer Program")
+
+print("Welcome to The Data Analyzer and Transformer Program")
 
 data = []
-array_type = 0
-a=[]
+
+
 
 def input_data():
-    print("Select an Option :")
-    print("1. 1D Array :")
-    print("2. 2D Array :")
+    """Get input from user and store in 1D or 2D Array"""
+    global data
 
-    choice = int(input("Enter Your Choice :"))
+    print("Select an Option:")
+    print("1. 1D Array")
+    print("2. 2D Array")
+
+    choice = int(input("Enter Your Choice: "))
+
+   
 
     if choice == 1:
-        """Get Input From user And Store in 1D Array"""
-        global data,array_type,a
-        array_type=1
-        arr = input("Enter data for a 1D array (Separated By Spaces) : ").split()
+        """Get input from user and store in 1D Array"""
+       
 
-        for i in arr:
-            data.append(i)
-            data = list(map(int, arr))
+        entered_values = input("Enter data for a 1D array (Separated By Spaces): ").split()
+
+        data = list(map(int, entered_values))
+        
+
+        print("Data has been stored successfully!")
 
     elif choice == 2:
-        array_type=2
-        """Get Input From user And Store in 2D Array"""
-        rows = int(input("Enter Numbers Of Rows :"))
-        cols = int(input("Enter Numbers Of Column :"))
-     
+        """Get input from user and store in 2D Array"""
+        
+
+        rows = int(input("Enter Number Of Rows: "))
+        cols = int(input("Enter Number Of Columns: "))
+
         for i in range(rows):
-            global l
-            l = []
+            row = []
+
             for j in range(cols):
-                num = int(input("Enter The Number :"))
-                l.append(num)
-            data.append(l)
-            print("2D Array :")
-            print(l)
-            a = []
-            
-            for i in data:
-                a.extend(i)
-                    
+                num = int(input("Enter The Number: "))
+                row.append(num)
 
+            data.append(row)
+
+        
+def converter(data):
+    """Flatten nested row data into a 1D list when needed."""
+    if len(data)>0 and isinstance(data[0],list):
+        flat_values=[]
+        for i in data:
+            flat_values.extend(i)
+        return flat_values
     else:
-        print("Invalid Choice !!")
-
-
-print("data has been stored Successfully !!!")
-
+        return data
 
 def data_summary():
-    """Display summary"""
-    
-    if array_type==1:
-        print("data Summary : ")
-        print(f"- Total Elements : {len(data)}")
-        print(f"- Minimum Value : {min(data)}")
-        print(f"- Maximum Value : {max(data)}")
-        print(f"- Sum of all values: {sum(data)}")
-        print(f"- Average Value : {len(data) / sum(data):.2f}")
-        print()
-    elif array_type==2:
-        
-        
-        a=[]
-        
-        a=a.append(data)    
-        for i in data:        
-             a=list(map(int,i))
+    """Display a summary of the current dataset."""
 
-        print("data Summary : ")
-        print(f"- Total Elements : {len(a)}")
-        print(f"- Minimum Value : {min(a)}")
-        print(f"- Maximum Value : {max(a)}")
-        print(f"- Sum of all values: {sum(a)}")
-        print(f"- Average Value : {len(a) / sum(a):.2f}")
-        print()
- 
+    values=converter(data)
+   
+    print("Data Summary:")
+    print(f"- Total Elements: {len(values)}")
+    print(f"- Minimum Value: {min(values)}")
+    print(f"- Maximum Value: {max(values)}")
+    print(f"- Sum of all values: {sum(values)}")
+    print(f"- Average Value: {sum(values) / len(values):.2f}")
+    print()
+
 
 def fact(n):
     """Calculate Factorial"""
 
-    if n <= 0:
+    if n < 0:
+        return None
+
+    if n == 0 or n == 1:
         return 1
-    else:
-        return n * fact(n - 1)
+
+    return n * fact(n - 1)
 
 
 def Fact_data():
+    """Calculate Factorial of a number using recursion."""
     num = int(input("Enter Your Number for Factorial: "))
+
+    if num < 0:
+        print("Factorial is not defined for negative numbers.")
+        return
+
     res = fact(num)
-    print(f"Factorial of {num} is : {res}")
+    print(f"Factorial of {num} is: {res}")
 
 
 def Thresold_data():
     """Filter and display values greater than the threshold."""
-    if array_type==1:
-        value = int(input("Enter a threshold value:- "))
-        res = filter(lambda x: x > value, data)
-        print(*res, sep=", ")
-    elif array_type==2:
-        value1 = int(input("Enter a threshold value:- "))
-        res1 = filter(lambda x: x > value1, a)
-        print(*res1, sep=", ")
+    values=converter(data)
+    
 
+    value = int(input("Enter a threshold value: "))
+
+    ans = filter(lambda x: x > value, values)
+    print(*ans,sep=", ")
+    
+    print("Values greater than threshold:")
+    
 
 
 def sort_data():
     """Sort the dataset in ascending or descending order."""
 
-    print("Select An Option (1-2) :")
-    print("1. Ascending.")
-    print("2. Descending.")
+    values=converter(data)
 
-    choice = int(input("Enter Your Choice:-"))
+    print("Select An Option (1-2):")
+    print("1. Ascending")
+    print("2. Descending")
+
+    choice = int(input("Enter Your Choice: "))
 
     if choice == 1:
+        values.sort()
         print("Sorted data in Ascending order:")
-        data.sort()
-        print(data)
+        print(values)
 
     elif choice == 2:
+        values.sort(reverse=True)
         print("Sorted data in Descending order:")
-        data.sort(reverse=True)
-        print(data)
+        print(values)
 
     else:
         print("Invalid Choice!!")
 
 
-def data_statistics():
-    """For Returning minimum, maximum, total, and average values."""
-    if array_type==1:
+def data_statistics(*value):
+    """Return minimum, maximum, total, and average values."""
+    print("Data Statistics : ")
+    minimum = min(value)
+    maximum = max(value)
+    total = sum(value)
+    average = sum(value) / len(value) 
 
-        total = sum(data)
-        minimum = min(data)
-        maximum = max(data)
-        average = sum(data) / len(data)
+    return minimum, maximum, total, average
     
-        return minimum, maximum, total, average
-    elif array_type==2:
-        
-        total = sum(a)
-        minimum = min(a)
-        maximum = max(a)
-        average = sum(a) / len(a)
-    
-        return minimum, maximum, total, average
+
 
 
 
 while True:
-    print("")
-    print("Main Menu: ")
-    print("1. Input data")
-    print("2. data Summary (Built-in-Functions)")
+
+    print()
+    print("Main Menu:")
+    print("1. Input Data")
+    print("2. Data Summary (Built-in Functions)")
     print("3. Calculate Factorial (Recursion)")
-    print("4. Filter data By Threshold (Lambda Function)")
-    print("5. Sort data")
-    print("6. Display data Set Statistics (Return Multiple Values)")
+    print("4. Filter Data By Threshold (Lambda Function)")
+    print("5. Sort Data")
+    print("6. Display Data Set Statistics (Return Multiple Values)")
     print("7. Exit Program")
     print()
 
-    choice = int(input("Please Enter Your Choice :- "))
+    choice = int(input("Please Enter Your Choice: "))
     print()
 
-    if choice == 1:    
+    if choice == 1:
         input_data()
+
     elif choice == 2:
         data_summary()
 
@@ -180,18 +178,15 @@ while True:
         sort_data()
 
     elif choice == 6:
-        total, minimum, maximum, average = data_statistics()
-
-        print(f"- Minimum Value : {minimum}")
-        print(f"- Maximum Value : {maximum}")
-        print(f"- Sum of all values : {total}")
-        print(f"- Average Value : {average:.2f}")
-
+        values=converter(data)
+        minimum, maximum, total, average = data_statistics(*values)
+        print(f"- Minimum Value: {minimum}")
+        print(f"- Maximum Value: {maximum}")
+        print(f"- Sum of all values: {total}")
+        print(f"- Average Value: {average:.2f}")
     elif choice == 7:
-        print(
-            "Thank you for using The Data Analyzer and Transformer Program."
-        )
+        print("Thank you for using The Data Analyzer and Transformer Program.")
         break
 
     else:
-        print("Invalid Choice !!")
+        print("Invalid Choice!!")
